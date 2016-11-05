@@ -1,0 +1,32 @@
+body {
+	font-family: "Courier New", Courier, monospace;
+}
+
+.line {
+	margin: 0 auto;
+	width: 80%;
+	text-align: center;
+}
+
+.title {
+	text-align: center;
+}
+
+.link {
+	display: none;
+	padding: 10px;
+	background: #e5e5e5;
+	color: #000000;
+}
+
+.word {
+	float: left;
+	width: 50%;
+	background-color: #e5e5e5;
+}
+
+.count {
+	float: right;
+	width: 50%;
+	background-color: #e5e5e5;
+}
