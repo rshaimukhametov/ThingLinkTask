@@ -41,7 +41,7 @@ public class ParseScenes {
     }
 
     public static List<Scene> getScenes(List<String> userIds) {
-        List<Scene> scenes = new ArrayList<Scene>();
+        List<Scene> scenes = new ArrayList<>();
 
         try {
 
@@ -62,9 +62,7 @@ public class ParseScenes {
                 }
             }
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
 
@@ -74,19 +72,19 @@ public class ParseScenes {
     /* 1) Words "Test" and "test" considered as the same word
     *  2) In result .html file frequency of words will be shown for lower case word - "test" */
     public static Map<String, Word> getWords(List<Scene> scenes) {
-        Map<String, Word> words = new HashMap<String, Word>();
+        Map<String, Word> words = new LinkedHashMap<>();
 
         for (Scene scene : scenes) {
             String title = scene.getTitle();
 
-            List<String> allMatches = new ArrayList<String>();
+            List<String> allMatches = new ArrayList<>();
             Matcher m = Pattern.compile("\\b[a-zA-Z]+\\b", Pattern.CASE_INSENSITIVE)
                     .matcher(title);
             while (m.find()) {
                 allMatches.add(m.group());
             }
             for (String match : allMatches) {
-                Set<String> ids = new HashSet<String>();
+                Set<String> ids = new HashSet<>();
                 Word word = words.get(match.toLowerCase());
                 Integer count = null;
                 if (word != null) {
@@ -108,7 +106,13 @@ public class ParseScenes {
             }
         }
 
-        return words;
+        List<Map.Entry<String, Word>> entries = new ArrayList<>(words.entrySet());
+        Collections.sort(entries, new WordComparator());
+        Map<String, Word> sortedWordsMap = new LinkedHashMap<>();
+        for (Map.Entry<String, Word> entry : entries) {
+            sortedWordsMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedWordsMap;
     }
 
     public static StringBuilder generateHtml(Map<String, Word> words) {
