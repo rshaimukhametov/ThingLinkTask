@@ -16,11 +16,12 @@ public class ParseScenes {
     public static final String URL_START = "https://www.thinglink.com/api/user/";
     public static final String URL_END = "/scenes?pretty=true";
     public static final String THINGLINK = "https://www.thinglink.com/";
+    public static final String IDS_CONFIG_FILE = "./src/main/resources/user_ids.txt";
 
     public static void main(String[] args) {
 
         try {
-            List<String> userIds = FileUtils.readLines(new File("./src/main/resources/user_ids.txt"), "utf-8");
+            List<String> userIds = FileUtils.readLines(new File(IDS_CONFIG_FILE), "utf-8");
 
             List<Scene> scenes = getScenes(userIds);
             Map<String, Word> words = getWords(scenes);
