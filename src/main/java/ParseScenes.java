@@ -1,6 +1,8 @@
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.json.*;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
@@ -8,19 +10,24 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// TODO: sort by count; another html structure - one div for one line
 public class ParseScenes {
 
     public static final String FILENAME = "./web/sample.html";
-    public static final String URL = "https://www.thinglink.com/api/user/272673363690782722/scenes?pretty=true";
+    public static final String URL_START = "https://www.thinglink.com/api/user/";
+    public static final String URL_END = "/scenes?pretty=true";
     public static final String THINGLINK = "https://www.thinglink.com/";
 
     public static void main(String[] args) {
 
-        List<Scene> scenes = getScenes();
-        Map<String, Word> words = getWords(scenes);
-        writeToFile(FILENAME, words);
+        try {
+            List<String> userIds = FileUtils.readLines(new File("./src/main/resources/user_ids.txt"), "utf-8");
 
+            List<Scene> scenes = getScenes(userIds);
+            Map<String, Word> words = getWords(scenes);
+            writeToFile(FILENAME, words);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void writeToFile(String fileName, Map<String, Word> words) {
@@ -33,24 +40,26 @@ public class ParseScenes {
         }
     }
 
-    // check for getting null
-    public static List<Scene> getScenes() {
+    public static List<Scene> getScenes(List<String> userIds) {
         List<Scene> scenes = new ArrayList<Scene>();
 
         try {
-            URL url = new URL(URL);
 
-            JSONObject jsonObject = (JSONObject) new JSONTokener(IOUtils.toString(url.openStream(), "UTF-8")).nextValue();
-            JSONArray results = (JSONArray) jsonObject.get("results");
+            for (String userId : userIds) {
+                URL url = new URL(URL_START + userId + URL_END);
 
-            for (int i = 0; i < results.length(); i++) {
+                JSONObject jsonObject = (JSONObject) new JSONTokener(IOUtils.toString(url.openStream(), "UTF-8")).nextValue();
+                JSONArray results = (JSONArray) jsonObject.get("results");
 
-                JSONObject object = results.getJSONObject(i);
+                for (int i = 0; i < results.length(); i++) {
 
-                String id = object.getString("id");
-                String title = object.getString("title");
+                    JSONObject object = results.getJSONObject(i);
 
-                scenes.add(new Scene(id, title));
+                    String id = object.getString("id");
+                    String title = object.getString("title");
+
+                    scenes.add(new Scene(id, title));
+                }
             }
 
         } catch (JSONException e) {
