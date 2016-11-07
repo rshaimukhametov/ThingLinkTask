@@ -12,21 +12,39 @@ body {
 	text-align: center;
 }
 
-.link {
+.linksblock {
 	display: none;
 	padding: 10px;
 	background: #e5e5e5;
 	color: #000000;
+	overflow: scroll;
+	max-height: 200px;
+
+	-webkit-overflow-scrolling: touch;
 }
 
 .word {
 	float: left;
 	width: 50%;
 	background-color: #e5e5e5;
+	margin: 0;
+	padding: 10px 0;
 }
 
 .count {
 	float: right;
 	width: 50%;
 	background-color: #e5e5e5;
+	margin: 0;
+	padding: 10px 0;
+}
+
+.link {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
 }

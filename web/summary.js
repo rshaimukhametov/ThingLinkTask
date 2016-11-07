@@ -4,9 +4,9 @@ $(document).ready(function() {
         var word = $(this);
 
         word.hover(function(e) {
-          $(this).children('.link').show();
+          $(this).children('.linksblock').show();
         }, function() {
-            $(this).children('.link').hide();
+            $(this).children('.linksblock').hide();
         });
     });
 });

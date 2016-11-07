@@ -15,7 +15,7 @@ public class ParseScenes {
     public static final String FILENAME = "./web/sample.html";
     public static final String URL_START = "https://www.thinglink.com/api/user/";
     public static final String URL_END = "/scenes?pretty=true";
-    public static final String THINGLINK = "https://www.thinglink.com/";
+    public static final String THINGLINK = "https://www.thinglink.com/scene/";
     public static final String IDS_CONFIG_FILE = "./src/main/resources/user_ids.txt";
 
     public static void main(String[] args) {
@@ -140,13 +140,15 @@ public class ParseScenes {
             html.append("\t\t\t<div class=\"line\">\n");
             html.append("\t\t\t\t<p class=\"word\">").append(entry.getKey()).append("</p>\n");
             html.append("\t\t\t\t<p class=\"count\">").append(word.getCount()).append("</p>\n");
+            html.append("\t\t\t\t<div class=\"linksblock\">\n");
 
             for (String id : ids) {
                 String link = THINGLINK + id;
                 html.append("\t\t\t\t<div class=\"link\">\n");
-                html.append("\t\t\t\t\t<a href=\"").append(link).append("\">").append(link).append("</a>\n");
+                html.append("\t\t\t\t\t<a href=\"").append(link).append("\" target=\"_blank\">").append(link).append("</a>\n");
                 html.append("\t\t\t\t</div>\n");
             }
+            html.append("\t\t\t</div>\n");
             html.append("\t\t\t</div>\n");
         }
 
